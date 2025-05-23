@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Para Ti 💖</title>
+  <style>
+    body {
+      background-color: #ffe6f0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+      color: #d63384;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    #lyrics {
+      font-size: 1.5rem;
+      margin-top: 30px;
+      white-space: pre-line;
+      line-height: 1.8;
+    }
+
+    iframe {
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <h1>🎵 Para una chica increíble 🎵</h1>
+
+  <iframe id="ytplayer" width="560" height="315"
+    src="https://www.youtube.com/embed/kdeXZK5jrqw?enablejsapi=1"
+    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+  </iframe>
+
+  <div id="lyrics"></div>
+
+  <script>
+    let tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    let firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    let player;
+    let lyricsDiv = document.getElementById("lyrics");
+
+    const lyrics = [
+      { time: 0, text: "🎶 Noelia - Tú 🎶\n" },
+      { time: 5, text: "En mi mente estás, como una adicción" },
+      { time: 10, text: "Que se siente dulce tierna y natural" },
+      { time: 15, text: "Pasas el umbral de mi intimidad" },
+      { time: 20, text: "Llegas hasta el fondo de cada rincón" },
+      { time: 25, text: "Me tienes aquí\nComo quieres tú" },
+      { time: 30, text: "Vienes y desplazas a mi soledad" },
+      { time: 35, text: "Me vas atrapando" },
+      { time: 40, text: "En mi mente estás, palpitando a mil" },
+      { time: 45, text: "Y verte a mi lado es mi necesidad" },
+      { time: 50, text: "El dejarte ir o decir: 'adiós'" },
+      { time: 55, text: "Es morir en vida, es negarme a mí" },
+      { time: 60, text: "Que mi libertad\nSe termina en ti" },
+      { time: 65, text: "Y sentirte cerca de nuevo es saber\nQue te estoy amando" },
+      { time: 72, text: "Tú y de nuevo tú\nDejas que naufrague justamente en ti" },
+      { time: 78, text: "Tú, mi locura tú\nMe atas a tu cuerpo, no me dejas ir" },
+      { time: 85, text: "Tú, adherido aquí\nEntre cada átomo\nEntre cada célula vives tú" },
+      { time: 93, text: "Todo lo llenas tú\nQue vienes y pasas como un huracán" },
+      { time: 100, text: "Tú, total y pleno tú\nTe has vuelto mi fuerza y mi talismán" },
+      { time: 108, text: "Tú, silente y sutil\nEntre cada átomo\nEntre cada célula vives tú" },
+      { time: 115, text: "Vas creciendo en mí, es inevitable" },
+      { time: 120, text: "Caigo en tu mirada, soy tan vulnerable" },
+      { time: 125, text: "Desprendes la luz de cada palabra" },
+      { time: 130, text: "Te has vuelto mi espada tras cada batalla" },
+      { time: 135, text: "Descubrí el amor\nAl llegar a ti" },
+      { time: 140, text: "Y caigo de nuevo en esta conclusión\nQue te estoy amando" },
+      { time: 147, text: "Tú y de nuevo tú\nDejas que naufrague justamente en ti" },
+      { time: 153, text: "Tú, mi locura tú\nMe atas a tu cuerpo, no me dejas ir" },
+      { time: 160, text: "Tú, adherido aquí\nEntre cada átomo\nEntre cada célula vives tú" },
+      { time: 168, text: "Todo lo llenas tú\nQue vienes y pasas como un huracán" },
+      { time: 174, text: "Tú, total y pleno tú\nTe has vuelto mi fuerza y mi talismán" },
+      { time: 180, text: "Tú, silente y sutil\nEntre cada átomo\nEntre cada célula" },
+      { time: 187, text: "Y es que has hecho de mí\nLo que tú quieres, lo que sientes, lo que has deseado" },
+      { time: 193, text: "A tu sexo, a tus ganas, a tu entorno, a tus afectos tú me has moldeado" },
+      { time: 199, text: "Y en todo vives tú\nEntre cada célula vives tú" },
+      { time: 205, text: "Todo lo llenas tú\nTe vienes y pasas como un huracán" },
+      { time: 210, text: "Tú, total y pleno tú\nTe has vuelto mi fuerza y mi talismán" },
+      { time: 216, text: "Tú, silente y sutil\nEntre cada átomo" },
+      { time: 221, text: "Y en todo vives tú" },
+      { time: 225, text: "Y de nuevo tú\nDejas que naufrague justamente en ti" },
+      { time: 230, text: "Y tú, mi locura tú\nMe atas a tu cuerpo, no me dejas ir" },
+      { time: 236, text: "Tú, adherido aquí\nEntre cada átomo\nEntre cada célula vives tú" }
+    ];
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('ytplayer', {
+        events: {
+          'onReady': onPlayerReady
+        }
+      });
+    }
+
+    function onPlayerReady(event) {
+      setInterval(() => {
+        const time = player.getCurrentTime();
+        const currentLine = lyrics
+          .slice()
+          .reverse()
+          .find(line => time >= line.time);
+        if (currentLine) {
+          lyricsDiv.innerText = currentLine.text;
+        }
+      }, 500);
+    }
+  </script>
+</body>
+</html>
